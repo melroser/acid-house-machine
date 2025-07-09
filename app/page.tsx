@@ -88,7 +88,7 @@ const AcidHouseSynth = () => {
   const delayNodeRef = useRef<DelayNode | null>(null);
   const delayFeedbackGainRef = useRef<GainNode | null>(null);
   const reverbConvolverRef = useRef<ConvolverNode | null>(null);
-  const compressionNodeRef = useRef<DynamicCompressorNode | null>(null);
+  const compressionNodeRef = useRef<DynamicsCompressorNode | null>(null);
   const duckGainRef = useRef<GainNode | null>(null);
   const kickGainRef = useRef<GainNode | null>(null);
 
@@ -487,7 +487,10 @@ const AcidHouseSynth = () => {
   };
 
   // Handle synth param change
-  const handleSynthParamChange = (param: keyof SynthParams, value: number) => {
+  const handleSynthParamChange = (
+    param: keyof SynthParams, 
+    value: number | 'sawtooth' | 'square' | 'triangle'
+  ) => {
     setSynthParams(prev => ({ ...prev, [param]: value }));
   };
 
@@ -525,7 +528,7 @@ const AcidHouseSynth = () => {
                   key={type}
                   className={`px-3 py-2 rounded-md ${synthParams.oscillatorType === type ? 'bg-green-600 text-black' : 'bg-black border border-green-500'}`}
                   onClick={() => handleSynthParamChange('oscillatorType', type as SynthParams['oscillatorType'])}
-                >
+                 >
                   {type.toUpperCase()}
                 </button>
               ))}
@@ -858,10 +861,12 @@ const AcidHouseSynth = () => {
         {/* Synth Sequencer */}
         <div className="mb-6">
           <h3 className="text-green-400 mb-2">SYNTH SEQUENCER</h3>
-          <div className="flex mb-2">
+          <div className="flex mb-1">
             {Array(16).fill(0).map((_, i) => (
               <div key={i} className="w-8 flex justify-center">
-                <div className={`text-xs text-green-400 ${i === currentStep && isPlaying ? 'font-bold' : ''}`}>{i + 1}</div>
+                <div className={`text-xs text-green-400 ${i === currentStep && isPlaying ? 'font-bold' : ''} w-6 text-center`}>
+                  {i + 1}
+                </div>
               </div>
             ))}
           </div>
@@ -879,10 +884,12 @@ const AcidHouseSynth = () => {
         {/* Drum Sequencer */}
         <div>
           <h3 className="text-blue-400 mb-2">DRUM SEQUENCER</h3>
-          <div className="flex mb-2">
+          <div className="flex mb-1">
             {Array(16).fill(0).map((_, i) => (
               <div key={i} className="w-8 flex justify-center">
-                <div className={`text-xs text-blue-400 ${i === currentStep && isPlaying ? 'font-bold' : ''}`}>{i + 1}</div>
+                <div className={`text-xs text-blue-400 ${i === currentStep && isPlaying ? 'font-bold' : ''} w-6 text-center`}>
+                  {i + 1}
+                </div>
               </div>
             ))}
           </div>
